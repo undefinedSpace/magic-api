@@ -1,4 +1,4 @@
-const mysql  = require('mysql');
+const knex  = require('knex');
 const dbConf = require('../config/database.conf');
 
 let connection;
@@ -6,10 +6,8 @@ let connection;
 const connect = () => {
     if (connection) return connection;
 
-    connection = mysql.createConnection(dbConf);
-    connection.connect();
-
+    connection = knex(dbConf);
     return connection;
 };
 
-return connect();
+module.exports = connect();

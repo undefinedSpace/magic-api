@@ -1,7 +1,10 @@
 
 module.exports = {
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'uf'
+  client: 'mysql',
+  connection: {
+    host : 'localhost',
+    user : 'root',
+    password : '',
+    database : 'uf'
+  }
 };

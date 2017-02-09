@@ -1,8 +1,8 @@
 const db = require('../bootstrap/initDBConnection');
 
 const resolver = {
-  events: args => {
-    return db('events').select();
+  files: args => {
+    return db('files').where(args).select();
   },
 };
 
