@@ -1,3 +1,4 @@
+import 'antd/dist/antd.css';
 import App from './app';
 import routes from './routes';
 import Layout from './layout';

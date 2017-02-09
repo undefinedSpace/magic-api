@@ -1,11 +1,56 @@
+import { Table } from 'antd';
 import React from 'react';
+const Lokka = require('lokka').Lokka;
+const Transport = require('lokka-transport-http').Transport;
 
-export default function About() {
-  return (
-    <div>
-      <h1>About</h1>
-    </div>
-  );
+const gq = new Lokka({
+  transport: new Transport(`http://${document.location.hostname}:3000/graphql`)
+});
+
+export default class About extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  componentDidMount() {
+    gq.query(`
+       {
+          folders {
+            id
+            name
+            inode
+            id_parent
+          }
+        }
+    `).then(result => {
+        this.setState(result);
+    });
+  }
+  
+
+  render() {
+    const columns = [{
+      title: 'Id',
+      dataIndex: 'id',
+      key: 'id',
+    }, {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    }, {
+      title: 'Inode',
+      dataIndex: 'inode',
+      key: 'inode',
+    }, {
+      title: 'Parent ID',
+      dataIndex: 'id_parent',
+      key: 'id_parent',
+    }];
+
+    return (<Table dataSource={this.state.folders} columns={columns} />);
+  }
 }
 
 About.displayName = 'About';

@@ -1,19 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { browserHistory } from 'react-router';
 import routes from '../routes';
+import { Menu, Icon } from 'antd';
 
-const mapStateToProps = state => ({ title: state.get('title') });
+class Nav extends React.Component {
+  constructor(props) {
+    super(props);
 
-export let Nav = ({ title }) => (
-  <nav className="navbar navbar-full navbar-dark bg-inverse">
-    <a className="navbar-brand" href="/">{title}</a>
-    <div className="nav navbar-nav">
-      {routes.map(r => <Link className="nav-item nav-link" key={r.path} to={r.path}>{r.title}</Link>)}
-    </div>
-  </nav>
-);
+    this.state = {};
+  }
+
+  go(item) {
+    browserHistory.push(item.key);
+  }
+
+  render() {
+    const menuProps = {
+      theme: "dark", 
+      mode: "inline",
+      defaultSelectedKeys: [document.location.pathname],
+      onClick: this.go
+    };
+
+    return (<Menu {...menuProps}>
+      {routes.map(r => <Menu.Item key={r.path}>
+          <Icon type="user" />
+          <span className="nav-text">{r.title}</span>
+        </Menu.Item>)}
+      </Menu>)
+  }
+};
 
 Nav.displayName = 'Nav';
 
-export default connect(mapStateToProps)(Nav);
+export default Nav;
