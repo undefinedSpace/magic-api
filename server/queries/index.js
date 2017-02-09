@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { schema, resolver } = require('./testQuery');
 
 let resolvers = {};
 fs.readdirSync(__dirname).forEach(f => {
