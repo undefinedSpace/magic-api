@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { Table, Spin, Button } from 'antd';
 import React from 'react';
 const Lokka = require('lokka').Lokka;
 const Transport = require('lokka-transport-http').Transport;
@@ -49,7 +49,9 @@ export default class About extends React.Component {
       key: 'id_parent',
     }];
 
-    return (<Table dataSource={this.state.folders} columns={columns} />);
+    return (<Spin tip="Loading..." spinning={!this.state.folders}>
+      <Table dataSource={this.state.folders} columns={columns} />
+    </Spin>);
   }
 }
 

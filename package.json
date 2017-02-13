@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "antd": "^2.7.0",
+    "body-parser": "^1.16.1",
     "bootstrap": "4.0.0-alpha.2",
     "cors": "^2.8.1",
     "express": "^4.14.1",

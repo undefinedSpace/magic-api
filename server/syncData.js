@@ -11,13 +11,19 @@ const readJSON = fileName => new Promise((reolve, reject) => (
 ));
 
 const insertRow = (data, parentId, serverId) => {
-    return db(`${data.type}s`).insert({
-        "name": data.name,
-        "inode": data.inode,
-        "hash": data.crc || 0,
-        "id_server": serverId,
-        "id_parent": parentId
-    }).returning('id');
+    const tableName = data.type === 'folder' ? `folders` : 'files';
+    return db(tableName)
+        .insert({
+            "name": data.name,
+            "inode": data.inode,
+            "hash": data.crc || 0,
+            "id_server": serverId,
+            "id_parent": parentId
+        })
+        .whereNotExists(function() {
+            return this.select('inode').from(tableName).where('inode', '=', data.inode);
+        })
+        .returning('id');
 };
 
 const eachContent = (data, parentId = 0, serverId = 1) => {
@@ -31,6 +37,13 @@ const eachContent = (data, parentId = 0, serverId = 1) => {
     });
 };
 
-readJSON(backupFileName).then(data => {
-    eachContent(data);
-});
+const fromFile = (fileName = backupFileName) => {
+    readJSON(fileName).then(data => {
+        eachContent(data);
+    });
+}
+
+module.exports = {
+    fromFile: fromFile,
+    inserTree: eachContent
+};
