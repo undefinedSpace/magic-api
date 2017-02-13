@@ -1,7 +1,7 @@
 const db = require('../bootstrap/initDBConnection');
 
 const resolver = {
-  projects: ({ id, hostname, token, ip }) => {
+  projects: (args) => {
     return db('projects').where(args).select();
   },
 };
